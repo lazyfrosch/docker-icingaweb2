@@ -21,10 +21,10 @@ Please checkout the [Docker Compose](docker-compose.yml) file as an example.
 
 If you use the docker example, the database credentials are:
 
-| Host     | db         |
-| Database | icingaweb2 |
-| User     | root       |
-| Password | rosebud    |
+    Host:     db
+    Database: icingaweb2
+    User:     icingaweb2
+    Password: rosebud
 
 ## TODO
 
