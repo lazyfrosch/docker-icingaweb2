@@ -32,6 +32,8 @@ Some things in this image need to be done, feel free to contribute!
 
 * Better database integration
 * Skipping the setup wizard?
+* Describe config of monitoring module
+* How to integrate other modules / enable the user to
 
 ## License
 
