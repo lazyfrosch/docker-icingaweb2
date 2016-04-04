@@ -1,8 +1,9 @@
 FROM php:5.6-apache
 
-RUN apt-get update && apt-get install -y libicu-dev libpng12-dev libpq-dev libjpeg-dev && rm -rf /var/lib/apt/lists/* \
+RUN apt-get update && apt-get install -y libicu-dev libldap2-dev libpng12-dev libpq-dev libjpeg-dev && rm -rf /var/lib/apt/lists/* \
+	&& docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu \
 	&& docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
-	&& docker-php-ext-install gd gettext intl mysql pdo_mysql pdo_pgsql pgsql
+	&& docker-php-ext-install gd gettext intl ldap mysql pdo_mysql pdo_pgsql pgsql
 
 ENV ICINGAWEB_VERSION 2.2.0
 ENV ICINGAWEB_SETUP_TOKEN docker
