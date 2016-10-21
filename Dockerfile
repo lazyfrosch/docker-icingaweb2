@@ -11,7 +11,8 @@ ENV ICINGAWEB_SETUP_TOKEN docker
 RUN curl -o /tmp/icingaweb2.tar.gz -SL "https://github.com/Icinga/icingaweb2/archive/v${ICINGAWEB_VERSION}.tar.gz" \
 	&& mkdir /usr/share/icingaweb2 \
 	&& tar xf /tmp/icingaweb2.tar.gz --strip-components=1 -C /usr/share/icingaweb2 \
-	&& rm -f /tmp/icingaweb2.tar.gz
+	&& rm -f /tmp/icingaweb2.tar.gz \
+	&& ln -s /usr/share/icingaweb2/bin/icingacli /usr/local/bin/icingacli
 
 RUN cp /usr/share/icingaweb2/packages/files/apache/icingaweb2.conf /etc/apache2/conf-enabled/ \
 	&& echo "RedirectMatch ^/$ /icingaweb2" >> /etc/apache2/conf-enabled/redirect.conf \
