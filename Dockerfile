@@ -5,7 +5,7 @@ RUN apt-get update && apt-get install -y libicu-dev libldap2-dev libpng12-dev li
 	&& docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
 	&& docker-php-ext-install gd gettext intl ldap mysql pdo_mysql pdo_pgsql pgsql
 
-ENV ICINGAWEB_VERSION 2.3.4
+ENV ICINGAWEB_VERSION 2.4.1
 ENV ICINGAWEB_SETUP_TOKEN docker
 
 RUN curl -o /tmp/icingaweb2.tar.gz -SL "https://github.com/Icinga/icingaweb2/archive/v${ICINGAWEB_VERSION}.tar.gz" \
