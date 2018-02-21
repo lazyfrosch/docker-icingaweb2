@@ -4,6 +4,7 @@ RUN apk add --no-cache \
 		php7-fpm \
 		ca-certificates \
 		curl \
+		nginx \
 		php7-ctype \
 		php7-curl \
 		php7-dom \
@@ -55,10 +56,10 @@ RUN cd /etc/php7 \
 	&& { \
 		echo '[global]'; \
 		echo 'error_log = /proc/self/fd/2'; \
+		echo 'log_level = warn'; \
 		echo; \
 		echo '[www]'; \
-		echo '; if we send this to /proc/self/fd/1, it never appears'; \
-		echo 'access.log = /proc/self/fd/2'; \
+		echo 'access.log = /dev/null'; \
 		echo; \
 		echo 'clear_env = no'; \
 		echo; \
@@ -70,13 +71,15 @@ RUN cd /etc/php7 \
 		echo 'daemonize = no'; \
 		echo; \
 		echo '[www]'; \
-		echo 'listen = 9000'; \
+		echo 'listen = /run/php-fpm.sock'; \
+		echo 'listen.owner = nginx'; \
+		echo 'listen.group = nginx'; \
 	} | tee php-fpm.d/zz-docker.conf
 
-COPY entrypoint.sh /entrypoint.sh
+COPY root/ /
 ENTRYPOINT ["/entrypoint.sh"]
 
-EXPOSE 9000
-CMD ["php-fpm7"]
+EXPOSE 80
+CMD ["/startup.sh"]
 
 # vi: ts=4 sw=4 noexpandtab
