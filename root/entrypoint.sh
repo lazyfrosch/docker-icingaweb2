@@ -5,7 +5,7 @@ set -e
 CONFIG_GROUP=${CONFIG_GROUP:-65534} # nobody on alpine
 ICINGAWEB_CONFIGDIR=${ICINGAWEB_CONFIGDIR:-'/etc/icingaweb2'}
 ICINGAWEB_SETUP_TOKEN=${ICINGAWEB_SETUP_TOKEN:-'docker'}
-XDEBUG_ENABLED=${XDEBUG_ENABLED:-0}
+XDEBUG_ENABLED=${XDEBUG_ENABLED:-''}
 
 export ICINGAWEB_CONFIGDIR
 
@@ -19,6 +19,11 @@ if [ `stat -c %g "$ICINGAWEB_CONFIGDIR"` != "$CONFIG_GROUP" ]; then
   chgrp -R "$CONFIG_GROUP" "$ICINGAWEB_CONFIGDIR"
   find "$ICINGAWEB_CONFIGDIR" -type d -exec chmod g+ws {} \;
   find "$ICINGAWEB_CONFIGDIR" -type f -exec chmod g+w {} \;
+fi
+
+if [ -n "$XDEBUG_ENABLED" ]; then
+  echo "Enabling xdebug"
+  cp /etc/php7/conf.d/xdebug.ini.disabled /etc/php7/conf.d/xdebug.ini
 fi
 
 exec "$@"
