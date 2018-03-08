@@ -2,16 +2,10 @@ version: '2'
 
 services:
   web:
-    image: nginx
-    ports:
-      - 8080:80
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-    depends_on:
-      - app
-  app:
     image: lazyfrosch/icingaweb2
     #build: .
+    ports:
+      - 8080:80
     volumes:
       - config:/etc/icingaweb2
     depends_on:

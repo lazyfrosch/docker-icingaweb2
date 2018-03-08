@@ -9,7 +9,7 @@ Icingaweb2 is a modern web interface for the [Icinga](https://www.icinga.com) sy
 
 ## How to use this image
 
-Check `docker-compose.example.yml` and `nginx.conf`.
+Check `docker-compose.example.yml`.
 
 After startup you can configure Icingaweb2 via the setup wizard at `http://localhost:8080/icingaweb2/setup`.
 
