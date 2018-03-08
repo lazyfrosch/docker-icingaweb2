@@ -4,6 +4,8 @@ services:
   web:
     image: lazyfrosch/icingaweb2
     #build: .
+    environment:
+      ICINGAWEB_TIMEZONE: 'Europe/Berlin'
     ports:
       - 8080:80
     volumes:
