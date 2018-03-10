@@ -18,7 +18,9 @@ RUN apk add --no-cache \
 		php7-mbstring \
 		php7-openssl \
 		php7-pdo_mysql \
+		php7-pdo_pgsql \
 		php7-pear \
+		php7-pgsql \
 		php7-session \
 		php7-xml \
 		yaml \
