@@ -1,5 +1,5 @@
 FROM_IMAGE := $(shell grep -P ^FROM Dockerfile | cut -d' ' -f2)
-IMAGE := lazyfrosch/icingaweb2:latest
+IMAGE := lazyfrosch/icingaweb2:2.4
 
 all: pull build
 

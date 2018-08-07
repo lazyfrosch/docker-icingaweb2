@@ -29,7 +29,7 @@ RUN apk add --no-cache \
 	&& (yes '' | pecl install xdebug) \
 	&& apk del --no-cache build-base php7-dev yaml-dev
 
-ENV ICINGAWEB_VERSION=2.5.3
+ENV ICINGAWEB_VERSION=2.4.2
 
 RUN curl -o /tmp/icingaweb2.tar.gz -SL "https://github.com/Icinga/icingaweb2/archive/v${ICINGAWEB_VERSION}.tar.gz" \
 	&& mkdir /usr/share/icingaweb2 \
