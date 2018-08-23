@@ -16,7 +16,7 @@ if [ ! -e "$ICINGAWEB_CONFIGDIR"/config.ini ]; then
 fi
 
 if [ -n "$ICINGAWEB_TIMEZONE" ]; then
-    echo "date.timezone = $ICINGAWEB_TIMEZONE" > etc/php7/conf.d/timezone.ini
+    echo "date.timezone = $ICINGAWEB_TIMEZONE" > /etc/php7/conf.d/timezone.ini
 fi
 
 if [ `stat -c %g "$ICINGAWEB_CONFIGDIR"` != "$CONFIG_GROUP" ]; then
