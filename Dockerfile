@@ -21,7 +21,10 @@ RUN apk add --no-cache \
 		php7-pdo_pgsql \
 		php7-pear \
 		php7-pgsql \
+		php7-phar \
 		php7-session \
+		php7-simplexml \
+		php7-tokenizer \
 		php7-xml \
 		yaml \
 	&& apk add --no-cache build-base php7-dev yaml-dev \
