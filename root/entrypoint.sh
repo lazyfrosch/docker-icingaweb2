@@ -8,6 +8,8 @@ ICINGAWEB_SETUP_TOKEN=${ICINGAWEB_SETUP_TOKEN:-'docker'}
 ICINGAWEB_TIMEZONE=${ICINGAWEB_TIMEZONE='UTC'}
 XDEBUG_ENABLED=${XDEBUG_ENABLED:-''}
 
+: "${ICINGAWEB_MEMORY_LIMIT:=512M}"
+
 export ICINGAWEB_CONFIGDIR
 
 if [ ! -e "$ICINGAWEB_CONFIGDIR"/config.ini ]; then
@@ -15,11 +17,19 @@ if [ ! -e "$ICINGAWEB_CONFIGDIR"/config.ini ]; then
   echo "$ICINGAWEB_SETUP_TOKEN" > "$ICINGAWEB_CONFIGDIR"/setup.token
 fi
 
+phpini() {
+  echo "$1 = $2" >> /etc/php7/conf.d/local-docker.ini
+}
+
 if [ -n "$ICINGAWEB_TIMEZONE" ]; then
-    echo "date.timezone = $ICINGAWEB_TIMEZONE" > /etc/php7/conf.d/timezone.ini
+  phpini date.timezone "$ICINGAWEB_TIMEZONE"
 fi
 
-if [ `stat -c %g "$ICINGAWEB_CONFIGDIR"` != "$CONFIG_GROUP" ]; then
+if [ -n "$ICINGAWEB_MEMORY_LIMIT" ]; then
+  phpini memory_limit "$ICINGAWEB_MEMORY_LIMIT"
+fi
+
+if [ "$(stat -c %g "$ICINGAWEB_CONFIGDIR")" != "$CONFIG_GROUP" ]; then
   echo "Updating permissions in $ICINGAWEB_CONFIGDIR"
   chgrp -R "$CONFIG_GROUP" "$ICINGAWEB_CONFIGDIR"
   find "$ICINGAWEB_CONFIGDIR" -type d -exec chmod g+ws {} \;
