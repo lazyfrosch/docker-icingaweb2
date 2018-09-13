@@ -18,7 +18,7 @@ if [ ! -e "$ICINGAWEB_CONFIGDIR"/config.ini ]; then
 fi
 
 phpini() {
-  echo "$1 = $2" >> /etc/php7/conf.d/local-docker.ini
+  echo "$1 = $2" >> /etc/php7/conf.d/ZZZlocal.ini
 }
 
 if [ -n "$ICINGAWEB_TIMEZONE" ]; then
