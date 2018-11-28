@@ -28,6 +28,8 @@ RUN apk add --no-cache \
 		php7-xml \
 		yaml \
 	&& apk add --no-cache build-base php7-dev yaml-dev \
+	&& pecl channel-update pecl.php.net \
+	&& sed -i 's|$PHP -C -n -q |$PHP -C -q |' /usr/bin/pecl \
 	&& (yes '' | pecl install yaml) \
 	&& (yes '' | pecl install xdebug) \
 	&& apk del --no-cache build-base php7-dev yaml-dev
