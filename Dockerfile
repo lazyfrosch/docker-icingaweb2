@@ -83,6 +83,20 @@ RUN cd /etc/php7 \
 		echo 'listen.group = nginx'; \
 	} | tee php-fpm.d/zz-docker.conf
 
+ENV ICINGA_DIRECTOR_VERSION=1.6.2 \
+    ICINGA_IPL_VERSION=0.2.1 \
+    ICINGA_INCUBATOR_VERSION=0.2.0
+
+RUN apk add --no-cache git
+
+RUN for module in director ipl incubator; do \
+	version_var="ICINGA_$(echo "${module}" | tr '[a-z]' '[A-Z]')_VERSION"; \
+    git clone --depth 1 \
+	  -b "v$(eval echo \$$version_var)" \
+	  "https://github.com/Icinga/icingaweb2-module-${module}.git" \
+	  /usr/share/icingaweb2/modules/"${module}" || exit 1; \
+	done
+
 COPY root/ /
 ENTRYPOINT ["/entrypoint.sh"]
 
