@@ -34,16 +34,6 @@ RUN apk add --no-cache \
 	&& (yes '' | pecl install xdebug) \
 	&& apk del --no-cache build-base php7-dev yaml-dev
 
-ENV ICINGAWEB_VERSION=2.6.3
-
-RUN curl -o /tmp/icingaweb2.tar.gz -SL "https://github.com/Icinga/icingaweb2/archive/v${ICINGAWEB_VERSION}.tar.gz" \
-	&& mkdir /usr/share/icingaweb2 \
-	&& tar xf /tmp/icingaweb2.tar.gz --strip-components=1 -C /usr/share/icingaweb2 \
-	&& rm -f /tmp/icingaweb2.tar.gz \
-	&& ln -s /usr/share/icingaweb2/bin/icingacli /usr/local/bin/icingacli
-
-VOLUME /etc/icingaweb2
-
 #RUN (echo "en_US.UTF-8 UTF-8"; echo "de_DE.UTF-8 UTF-8"; echo "fr_FR.UTF-8 UTF-8") >> /etc/locale.gen \
 # && DEBIAN_FRONTEND=noninteractive dpkg-reconfigure locales
 
@@ -83,9 +73,16 @@ RUN cd /etc/php7 \
 		echo 'listen.group = nginx'; \
 	} | tee php-fpm.d/zz-docker.conf
 
-ENV ICINGA_DIRECTOR_VERSION=1.6.2 \
+ENV ICINGAWEB_VERSION=2.6.3 \
+	ICINGA_DIRECTOR_VERSION=1.6.2 \
 	ICINGA_IPL_VERSION=0.2.1 \
 	ICINGA_INCUBATOR_VERSION=0.2.0
+
+RUN curl -o /tmp/icingaweb2.tar.gz -SL "https://github.com/Icinga/icingaweb2/archive/v${ICINGAWEB_VERSION}.tar.gz" \
+	&& mkdir /usr/share/icingaweb2 \
+	&& tar xf /tmp/icingaweb2.tar.gz --strip-components=1 -C /usr/share/icingaweb2 \
+	&& rm -f /tmp/icingaweb2.tar.gz \
+	&& ln -s /usr/share/icingaweb2/bin/icingacli /usr/local/bin/icingacli
 
 RUN for module in director ipl incubator; do \
 	version="ICINGA_$(echo "${module}" | tr '[a-z]' '[A-Z]')_VERSION" \
@@ -95,6 +92,8 @@ RUN for module in director ipl incubator; do \
 	&& tar xf /tmp/module.tar.gz --strip-components=1 -C "/usr/share/icingaweb2/modules/${module}" \
 	&& rm -f /tmp/module.tar.gz \
 	;done
+
+VOLUME /etc/icingaweb2
 
 COPY root/ /
 ENTRYPOINT ["/entrypoint.sh"]
