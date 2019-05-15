@@ -8,7 +8,7 @@ pull:
 	docker pull $(FROM_IMAGE)
 
 build:
-	docker build --rm --cache-from $(IMAGE) --tag $(IMAGE) .
+	docker build --force-rm --tag $(IMAGE) .
 
 push:
 	docker push $(IMAGE)
