@@ -96,9 +96,9 @@ RUN for module in director ipl incubator; do \
 VOLUME /etc/icingaweb2
 
 COPY root/ /
-ENTRYPOINT ["/entrypoint.sh"]
-
 EXPOSE 80
-CMD ["/startup.sh"]
+
+ENTRYPOINT ["docker-entrypoint"]
+CMD ["nginx-with-php"]
 
 # vi: ts=4 sw=4 noexpandtab
