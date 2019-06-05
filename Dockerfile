@@ -6,12 +6,14 @@ RUN apk update \
 		ca-certificates \
 		curl \
 		nginx \
+		openssl \
 		php7-ctype \
 		php7-curl \
 		php7-dom \
 		php7-fpm \
 		php7-gettext \
 		php7-gd \
+		php7-gmp \
 		php7-iconv \
 		php7-intl \
 		php7-json \
