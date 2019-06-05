@@ -1,6 +1,7 @@
 FROM alpine
 
-RUN apk add --no-cache \
+RUN apk update \
+    && apk add \
 		php7-fpm \
 		ca-certificates \
 		curl \
@@ -27,12 +28,13 @@ RUN apk add --no-cache \
 		php7-tokenizer \
 		php7-xml \
 		yaml \
-	&& apk add --no-cache build-base php7-dev yaml-dev \
+	&& apk add build-base php7-dev yaml-dev \
 	&& pecl channel-update pecl.php.net \
 	&& sed -i 's|$PHP -C -n -q |$PHP -C -q |' /usr/bin/pecl \
 	&& (yes '' | pecl install yaml) \
 	&& (yes '' | pecl install xdebug) \
-	&& apk del --no-cache build-base php7-dev yaml-dev
+	&& apk del build-base php7-dev yaml-dev \
+	&& rm -rf /var/cache/apk/*
 
 #RUN (echo "en_US.UTF-8 UTF-8"; echo "de_DE.UTF-8 UTF-8"; echo "fr_FR.UTF-8 UTF-8") >> /etc/locale.gen \
 # && DEBIAN_FRONTEND=noninteractive dpkg-reconfigure locales
