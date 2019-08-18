@@ -77,7 +77,7 @@ RUN cd /etc/php7 \
 		echo 'listen.group = nginx'; \
 	} | tee php-fpm.d/zz-docker.conf
 
-ENV ICINGAWEB_VERSION=2.7.0 \
+ENV ICINGAWEB_VERSION=2.7.1 \
 	ICINGA_DIRECTOR_VERSION=1.6.2 \
 	ICINGA_IPL_VERSION=0.3.0 \
 	ICINGA_INCUBATOR_VERSION=0.3.0
