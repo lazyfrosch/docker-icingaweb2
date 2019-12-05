@@ -1,0 +1,54 @@
+#!/bin/sh
+
+set -e
+
+running=1
+daemon_pid=
+
+handleexit() {
+  running=0
+}
+
+is_enabled() {
+  for module in director ipl incubator reactbundle; do
+    if ! test -e /etc/icingaweb2/enabledModules/"${module}"; then
+      return 1
+    fi
+  done
+}
+
+is_running() {
+  kill -0 "$daemon_pid" 2>/dev/null
+}
+
+trap handleexit INT TERM
+
+# Running in a loop to see if the daemon is running
+while [ $running -eq 1 ]; do
+  if ! is_enabled; then
+    sleep 10
+    continue
+  fi
+  if [ -z "$daemon_pid" ] || ! is_running; then
+    echo "Starting Icinga Director Daemon..."
+    icingacli director daemon &
+    daemon_pid=$!
+    sleep 5
+  fi
+  sleep 1
+done
+
+# Stopping daemon when it is running
+if [ -n "$daemon_pid" ] && is_running; then
+  echo "Stopping Icinga Director Daemon..."
+  kill -TERM "$daemon_pid"
+
+  # Wait 5 seconds til KILL
+  for _ in $(seq 1 5); do
+    is_running || break
+  done
+  if is_running; then
+    echo "Sending KILL to Icinga Director Daemon"
+    kill -9 "$daemon_pid"
+  fi
+fi

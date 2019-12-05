@@ -2,4 +2,6 @@
 
 php-fpm7 &
 
+icinga-director-daemon &
+
 exec nginx
