@@ -1,7 +1,7 @@
 FROM alpine
 
 RUN apk update \
-    && apk add \
+	&& apk add \
 		php7-fpm \
 		ca-certificates \
 		curl \
@@ -32,13 +32,11 @@ RUN apk update \
 		php7-simplexml \
 		php7-tokenizer \
 		php7-xml \
+		php7-pecl-yaml \
+		php7-pecl-xdebug \
 		yaml \
-	&& apk add build-base php7-dev yaml-dev \
-	&& pecl channel-update pecl.php.net \
-	&& sed -i 's|$PHP -C -n -q |$PHP -C -q |' /usr/bin/pecl \
-	&& (yes '' | pecl install yaml) \
-	&& (yes '' | pecl install xdebug) \
-	&& apk del build-base php7-dev yaml-dev \
+	&& mv /etc/php7/conf.d/xdebug.ini /etc/php7/conf.d/xdebug.ini.orig \
+	&& php -m \
 	&& rm -rf /var/cache/apk/*
 
 #RUN (echo "en_US.UTF-8 UTF-8"; echo "de_DE.UTF-8 UTF-8"; echo "fr_FR.UTF-8 UTF-8") >> /etc/locale.gen \
@@ -46,7 +44,6 @@ RUN apk update \
 
 RUN cd /etc/php7 \
 	&& echo 'date.timezone = UTC' > conf.d/timezone.ini \
-	&& echo 'extension=yaml.so' > conf.d/yaml.ini \
 	&& { \
 		echo 'zend_extension=/usr/lib/php7/modules/xdebug.so'; \
 		echo; \
