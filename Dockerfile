@@ -7,6 +7,7 @@ RUN apk update \
 		curl \
 		nginx \
 		openssl \
+		gnu-libiconv \
 		php7-ctype \
 		php7-curl \
 		php7-dom \
@@ -81,7 +82,8 @@ ENV ICINGAWEB_VERSION=2.7.3 \
 	ICINGA_DIRECTOR_VERSION=1.7.2 \
 	ICINGA_IPL_VERSION=0.4.0 \
 	ICINGA_INCUBATOR_VERSION=0.5.0 \
-	ICINGA_REACTBUNDLE_VERSION=0.7.0
+	ICINGA_REACTBUNDLE_VERSION=0.7.0 \
+	LD_PRELOAD="/usr/lib/preloadable_libiconv.so php-fpm7 php"
 
 RUN curl -o /tmp/icingaweb2.tar.gz -SL "https://github.com/Icinga/icingaweb2/archive/v${ICINGAWEB_VERSION}.tar.gz" \
 	&& mkdir /usr/share/icingaweb2 \
