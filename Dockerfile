@@ -33,6 +33,7 @@ RUN apk update \
 		php7-simplexml \
 		php7-tokenizer \
 		php7-xml \
+		php7-pecl-redis \
 		php7-pecl-yaml \
 		php7-pecl-xdebug \
 		yaml \
@@ -78,7 +79,8 @@ RUN cd /etc/php7 \
 		echo 'listen.group = nginx'; \
 	} | tee php-fpm.d/zz-docker.conf
 
-ENV ICINGAWEB_VERSION=2.7.3 \
+ENV ICINGAWEB_VERSION=2.8.0-rc1 \
+	ICINGA_ICINGADB_VERSION=1.0.0-rc1 \
 	ICINGA_DIRECTOR_VERSION=1.7.2 \
 	ICINGA_IPL_VERSION=0.4.0 \
 	ICINGA_INCUBATOR_VERSION=0.5.0 \
@@ -91,6 +93,17 @@ RUN curl -o /tmp/icingaweb2.tar.gz -SL "https://github.com/Icinga/icingaweb2/arc
 	&& rm -f /tmp/icingaweb2.tar.gz \
 	&& ln -s /usr/share/icingaweb2/bin/icingacli /usr/local/bin/icingacli
 
+# newer module names
+RUN for module in icingadb; do \
+	version="ICINGA_$(echo "${module}" | tr '[a-z]' '[A-Z]')_VERSION" \
+	&& curl -o /tmp/module.tar.gz -LS \
+		"https://github.com/Icinga/${module}-web/archive/v$(eval echo \$$version).tar.gz" \
+	&& mkdir "/usr/share/icingaweb2/modules/${module}" \
+	&& tar xf /tmp/module.tar.gz --strip-components=1 -C "/usr/share/icingaweb2/modules/${module}" \
+	&& rm -f /tmp/module.tar.gz \
+	;done
+
+# old module names
 RUN for module in director ipl incubator reactbundle; do \
 	version="ICINGA_$(echo "${module}" | tr '[a-z]' '[A-Z]')_VERSION" \
 	&& curl -o /tmp/module.tar.gz -LS \
