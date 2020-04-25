@@ -68,6 +68,9 @@ RUN cd /etc/php7 \
 		echo; \
 		echo '; Ensure worker stdout and stderr are sent to the main error log.'; \
 		echo 'catch_workers_output = yes'; \
+		echo; \
+		echo '; Session paths for a volume '; \
+		echo 'session.save_path = "/sessions"'; \
 	} | tee php-fpm.d/docker.conf \
 	&& { \
 		echo '[global]'; \
@@ -77,7 +80,11 @@ RUN cd /etc/php7 \
 		echo 'listen = /run/php-fpm.sock'; \
 		echo 'listen.owner = nginx'; \
 		echo 'listen.group = nginx'; \
-	} | tee php-fpm.d/zz-docker.conf
+	} | tee php-fpm.d/zz-docker.conf \
+	&& mkdir /sessions \
+	&& chown nobody:nobody /sessions
+
+VOLUME /sessions
 
 ENV ICINGAWEB_VERSION=2.8.0-rc1 \
 	ICINGA_ICINGADB_VERSION=1.0.0-rc1 \
