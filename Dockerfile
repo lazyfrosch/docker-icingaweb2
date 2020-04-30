@@ -68,10 +68,11 @@ RUN cd /etc/php7 \
 		echo; \
 		echo '; Ensure worker stdout and stderr are sent to the main error log.'; \
 		echo 'catch_workers_output = yes'; \
-		echo; \
+	} | tee php-fpm.d/docker.conf \
+	&& { \
 		echo '; Session paths for a volume '; \
 		echo 'session.save_path = "/sessions"'; \
-	} | tee php-fpm.d/docker.conf \
+	} | tee conf.d/docker.ini \
 	&& { \
 		echo '[global]'; \
 		echo 'daemonize = no'; \
