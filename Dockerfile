@@ -88,7 +88,8 @@ RUN cd /etc/php7 \
 VOLUME /sessions
 
 ENV ICINGAWEB_VERSION=2.8.2 \
-	ICINGA_ICINGADB_VERSION=1.0.0-rc1 \
+	ICINGA_ICINGADB_VERSION=1.0.0-rc1-111-gd4bea47 \
+	ICINGA_ICINGADB_GIT_REF=d4bea474b2d285ab39ddc065eeba80582c61d626 \
 	ICINGA_DIRECTOR_VERSION=1.7.2 \
 	ICINGA_IPL_VERSION=0.5.0 \
 	ICINGA_INCUBATOR_VERSION=0.5.0 \
@@ -101,15 +102,22 @@ RUN curl -o /tmp/icingaweb2.tar.gz -SL "https://github.com/Icinga/icingaweb2/arc
 	&& rm -f /tmp/icingaweb2.tar.gz \
 	&& ln -s /usr/share/icingaweb2/bin/icingacli /usr/local/bin/icingacli
 
+# icingadb dev
+RUN apk add -U git \
+	&& git clone https://github.com/Icinga/icingadb-web.git /usr/share/icingaweb2/modules/icingadb \
+	&& cd /usr/share/icingaweb2/modules/icingadb \
+	&& git checkout -B local "${ICINGA_ICINGADB_GIT_REF}" \
+	&& git describe --tags
+
 # newer module names
-RUN for module in icingadb; do \
-	version="ICINGA_$(echo "${module}" | tr '[a-z]' '[A-Z]')_VERSION" \
-	&& curl -o /tmp/module.tar.gz -LS \
-		"https://github.com/Icinga/${module}-web/archive/v$(eval echo \$$version).tar.gz" \
-	&& mkdir "/usr/share/icingaweb2/modules/${module}" \
-	&& tar xf /tmp/module.tar.gz --strip-components=1 -C "/usr/share/icingaweb2/modules/${module}" \
-	&& rm -f /tmp/module.tar.gz \
-	;done
+#RUN for module in icingadb; do \
+#	version="ICINGA_$(echo "${module}" | tr '[a-z]' '[A-Z]')_VERSION" \
+#	&& curl -o /tmp/module.tar.gz -LS \
+#		"https://github.com/Icinga/${module}-web/archive/v$(eval echo \$$version).tar.gz" \
+#	&& mkdir "/usr/share/icingaweb2/modules/${module}" \
+#	&& tar xf /tmp/module.tar.gz --strip-components=1 -C "/usr/share/icingaweb2/modules/${module}" \
+#	&& rm -f /tmp/module.tar.gz \
+#	;done
 
 # old module names
 RUN for module in director ipl incubator reactbundle; do \
