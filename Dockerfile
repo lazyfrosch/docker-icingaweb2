@@ -37,7 +37,7 @@ RUN apk update \
 		php7-pecl-yaml \
 		php7-pecl-xdebug \
 		yaml \
-	&& mv /etc/php7/conf.d/xdebug.ini /etc/php7/conf.d/xdebug.ini.orig \
+	&& mv /etc/php7/conf.d/50_xdebug.ini /etc/php7/conf.d/50_xdebug.ini.orig \
 	&& php -m \
 	&& rm -rf /var/cache/apk/*
 
