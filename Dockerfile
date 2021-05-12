@@ -88,8 +88,8 @@ RUN cd /etc/php7 \
 VOLUME /sessions
 
 ENV ICINGAWEB_VERSION=2.8.2 \
-	ICINGA_ICINGADB_VERSION=1.0.0-rc1-249-ge14cf93 \
-	ICINGA_ICINGADB_GIT_REF=e14cf93de42f9efc41c098469f84cb7c2a3cfc08 \
+#	ICINGA_ICINGADB_VERSION=1.0.0-rc1-249-ge14cf93 \
+#	ICINGA_ICINGADB_GIT_REF=e14cf93de42f9efc41c098469f84cb7c2a3cfc08 \
 	ICINGA_DIRECTOR_VERSION=1.8.0 \
 	ICINGA_IPL_VERSION=0.5.0 \
 	ICINGA_INCUBATOR_VERSION=0.6.0 \
@@ -102,12 +102,12 @@ RUN curl -o /tmp/icingaweb2.tar.gz -SL "https://github.com/Icinga/icingaweb2/arc
 	&& rm -f /tmp/icingaweb2.tar.gz \
 	&& ln -s /usr/share/icingaweb2/bin/icingacli /usr/local/bin/icingacli
 
-# icingadb dev
-RUN apk add -U git \
-	&& git clone https://github.com/Icinga/icingadb-web.git /usr/share/icingaweb2/modules/icingadb \
-	&& cd /usr/share/icingaweb2/modules/icingadb \
-	&& git checkout -B local "${ICINGA_ICINGADB_GIT_REF}" \
-	&& git describe --tags
+# icingadb dev - disabled because of incompatiblity with 2.8
+#RUN apk add -U git \
+#	&& git clone https://github.com/Icinga/icingadb-web.git /usr/share/icingaweb2/modules/icingadb \
+#	&& cd /usr/share/icingaweb2/modules/icingadb \
+#	&& git checkout -B local "${ICINGA_ICINGADB_GIT_REF}" \
+#	&& git describe --tags
 
 # newer module names
 #RUN for module in icingadb; do \
