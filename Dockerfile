@@ -44,6 +44,7 @@ RUN apk update \
 #RUN (echo "en_US.UTF-8 UTF-8"; echo "de_DE.UTF-8 UTF-8"; echo "fr_FR.UTF-8 UTF-8") >> /etc/locale.gen \
 # && DEBIAN_FRONTEND=noninteractive dpkg-reconfigure locales
 
+ENV LD_PRELOAD="/usr/lib/preloadable_libiconv.so php-fpm7 php"
 RUN cd /etc/php7 \
 	&& echo 'date.timezone = UTC' > conf.d/timezone.ini \
 	&& { \
@@ -82,6 +83,7 @@ RUN cd /etc/php7 \
 		echo 'listen.owner = nginx'; \
 		echo 'listen.group = nginx'; \
 	} | tee php-fpm.d/zz-docker.conf \
+	&& php -m \
 	&& mkdir /sessions \
 	&& chown nobody:nobody /sessions
 
@@ -94,8 +96,7 @@ ENV ICINGAWEB_VERSION=2.8.2 \
 	ICINGA_FILESHIPPER_VERSION=1.2.0 \
 	ICINGA_IPL_VERSION=0.5.0 \
 	ICINGA_INCUBATOR_VERSION=0.6.0 \
-	ICINGA_REACTBUNDLE_VERSION=0.9.0 \
-	LD_PRELOAD="/usr/lib/preloadable_libiconv.so php-fpm7 php"
+	ICINGA_REACTBUNDLE_VERSION=0.9.0
 
 RUN curl -o /tmp/icingaweb2.tar.gz -SL "https://github.com/Icinga/icingaweb2/archive/v${ICINGAWEB_VERSION}.tar.gz" \
 	&& mkdir /usr/share/icingaweb2 \
