@@ -89,7 +89,9 @@ RUN cd /etc/php7 \
 
 VOLUME /sessions
 
-ENV ICINGAWEB_VERSION=2.8.2 \
+ENV ICINGAWEB_VERSION=2.9.3 \
+    ICINGA_PHP_LIBRARY_VERSION=0.6.1 \
+    ICINGA_PHP_THIRDPARTY_VERSION=0.10.0 \
 #	ICINGA_ICINGADB_VERSION=1.0.0-rc1-249-ge14cf93 \
 #	ICINGA_ICINGADB_GIT_REF=e14cf93de42f9efc41c098469f84cb7c2a3cfc08 \
 	ICINGA_DIRECTOR_VERSION=1.8.0 \
@@ -103,6 +105,16 @@ RUN curl -o /tmp/icingaweb2.tar.gz -SL "https://github.com/Icinga/icingaweb2/arc
 	&& tar xf /tmp/icingaweb2.tar.gz --strip-components=1 -C /usr/share/icingaweb2 \
 	&& rm -f /tmp/icingaweb2.tar.gz \
 	&& ln -s /usr/share/icingaweb2/bin/icingacli /usr/local/bin/icingacli
+
+RUN curl -o /tmp/download.tar.gz -SL "https://github.com/Icinga/icinga-php-library/archive/v${ICINGA_PHP_LIBRARY_VERSION}.tar.gz" \
+	&& mkdir -p /usr/share/icinga-php/ipl \
+	&& tar xf /tmp/download.tar.gz --strip-components=1 -C /usr/share/icinga-php/ipl \
+	&& rm -f /tmp/download.tar.gz
+
+RUN curl -o /tmp/download.tar.gz -SL "https://github.com/Icinga/icinga-php-thirdparty/archive/v${ICINGA_PHP_THIRDPARTY_VERSION}.tar.gz" \
+	&& mkdir -p /usr/share/icinga-php/vendor \
+	&& tar xf /tmp/download.tar.gz --strip-components=1 -C /usr/share/icinga-php/vendor \
+	&& rm -f /tmp/download.tar.gz
 
 # icingadb dev - disabled because of incompatiblity with 2.8
 #RUN apk add -U git \
@@ -131,9 +143,18 @@ RUN for module in director fileshipper ipl incubator reactbundle; do \
 	&& rm -f /tmp/module.tar.gz \
 	;done
 
-VOLUME /etc/icingaweb2
+# RUN mkdir /etc/icingaweb2 \
+#  && chown nobody.nobody /etc/icingaweb2 \
+#  && mkdir /var/lib/icingaweb2 \
+#  && chown nobody.nobody /etc/icingaweb2
 
 COPY root/ /
+
+VOLUME /etc/icingaweb2
+VOLUME /var/lib/icingaweb2
+
+WORKDIR /etc/icingaweb2
+
 EXPOSE 80
 
 ENTRYPOINT ["docker-entrypoint"]
