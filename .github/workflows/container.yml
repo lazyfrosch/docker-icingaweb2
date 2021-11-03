@@ -1,0 +1,58 @@
+name: Container Image
+
+on:
+  push:
+    branches:
+      - master
+
+  pull_request:
+
+env:
+  IMAGE_NAME: icingaweb2
+  DOCKERHUB_ACCOUNT: lazyfrosch
+  DOCKER_BUILDKIT: 1
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build image
+        run: |
+          docker build . --file Dockerfile --tag $IMAGE_NAME \
+            --label="org.opencontainers.image.created=$(date --iso-8601=seconds)" \
+            --label="org.opencontainers.image.name=${{ env.IMAGE_NAME }}" \
+            --label="org.opencontainers.image.revision=${{ github.sha }}" \
+            --label="org.opencontainers.image.version=master" \
+            --label="org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}"
+
+      - name: Log in to registries
+        if: github.ref == 'refs/heads/master'
+        run: |
+          echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+
+      - name: Push image
+        if: github.ref == 'refs/heads/master'
+        run: |
+          # Strip git ref prefix from version
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          # Strip "v" prefix from tag name
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+          # Use Docker `latest` tag convention
+          [ "$VERSION" == "master" ] && VERSION=latest
+
+          echo VERSION=$VERSION
+
+          for image in \
+            "ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME" \
+            "${{ env.DOCKERHUB_ACCOUNT }}/$IMAGE_NAME"
+          do
+            docker tag $IMAGE_NAME $image:$VERSION
+            docker push $image:$VERSION
+          done
