@@ -92,7 +92,7 @@ VOLUME /sessions
 ENV ICINGAWEB_VERSION=2.9.4 \
     ICINGA_PHP_LIBRARY_VERSION=0.7.0 \
     ICINGA_PHP_THIRDPARTY_VERSION=0.10.0 \
-#	ICINGA_ICINGADB_VERSION=1.0.0-rc1-249-ge14cf93 \
+	ICINGA_ICINGADB_VERSION=1.0.0-rc2 \
 #	ICINGA_ICINGADB_GIT_REF=e14cf93de42f9efc41c098469f84cb7c2a3cfc08 \
 	ICINGA_DIRECTOR_VERSION=1.8.0 \
 	ICINGA_FILESHIPPER_VERSION=1.2.0 \
@@ -124,14 +124,14 @@ RUN curl -o /tmp/download.tar.gz -SL "https://github.com/Icinga/icinga-php-third
 #	&& git describe --tags
 
 # newer module names
-#RUN for module in icingadb; do \
-#	version="ICINGA_$(echo "${module}" | tr '[a-z]' '[A-Z]')_VERSION" \
-#	&& curl -o /tmp/module.tar.gz -LS \
-#		"https://github.com/Icinga/${module}-web/archive/v$(eval echo \$$version).tar.gz" \
-#	&& mkdir "/usr/share/icingaweb2/modules/${module}" \
-#	&& tar xf /tmp/module.tar.gz --strip-components=1 -C "/usr/share/icingaweb2/modules/${module}" \
-#	&& rm -f /tmp/module.tar.gz \
-#	;done
+RUN for module in icingadb; do \
+	version="ICINGA_$(echo "${module}" | tr '[a-z]' '[A-Z]')_VERSION" \
+	&& curl -o /tmp/module.tar.gz -LS \
+		"https://github.com/Icinga/${module}-web/archive/v$(eval echo \$$version).tar.gz" \
+	&& mkdir "/usr/share/icingaweb2/modules/${module}" \
+	&& tar xf /tmp/module.tar.gz --strip-components=1 -C "/usr/share/icingaweb2/modules/${module}" \
+	&& rm -f /tmp/module.tar.gz \
+	;done
 
 # old module names
 RUN for module in director fileshipper ipl incubator reactbundle; do \
