@@ -7,6 +7,8 @@ on:
 
   pull_request:
 
+  workflow_dispatch:
+
 env:
   IMAGE_NAME: icingaweb2
   DOCKERHUB_ACCOUNT: lazyfrosch
