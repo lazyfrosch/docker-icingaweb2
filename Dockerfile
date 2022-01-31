@@ -89,16 +89,25 @@ RUN cd /etc/php7 \
 
 VOLUME /sessions
 
-ENV ICINGAWEB_VERSION=2.9.5 \
-    ICINGA_PHP_LIBRARY_VERSION=0.7.0 \
-    ICINGA_PHP_THIRDPARTY_VERSION=0.10.0 \
-	ICINGA_ICINGADB_VERSION=1.0.0-rc2 \
-#	ICINGA_ICINGADB_GIT_REF=e14cf93de42f9efc41c098469f84cb7c2a3cfc08 \
-	ICINGA_DIRECTOR_VERSION=1.8.1 \
-	ICINGA_FILESHIPPER_VERSION=1.2.0 \
-	ICINGA_IPL_VERSION=0.5.0 \
-	ICINGA_INCUBATOR_VERSION=0.11.0 \
-	ICINGA_REACTBUNDLE_VERSION=0.9.0
+# renovate: datasource=github-releases depName=Icinga/icingaweb2
+ENV ICINGAWEB_VERSION=2.9.5
+# renovate: datasource=github-releases depName=Icinga/icinga-php-library
+ENV ICINGA_PHP_LIBRARY_VERSION=0.7.0
+# renovate: datasource=github-releases depName=Icinga/icinga-php-thirdparty
+ENV ICINGA_PHP_THIRDPARTY_VERSION=0.10.0
+# renovate: datasource=github-releases depName=Icinga/icingadb-web
+ENV ICINGA_ICINGADB_VERSION=1.0.0-rc2
+# ENV ICINGA_ICINGADB_GIT_REF=e14cf93de42f9efc41c098469f84cb7c2a3cfc08
+# renovate: datasource=github-releases depName=Icinga/icingaweb2-module-director
+ENV ICINGA_DIRECTOR_VERSION=1.8.1
+# renovate: datasource=github-releases depName=Icinga/icingaweb2-module-fileshipper
+ENV ICINGA_FILESHIPPER_VERSION=1.2.0
+# renovate: datasource=github-releases depName=Icinga/icingaweb2-module-ipl
+ENV ICINGA_IPL_VERSION=0.5.0
+# renovate: datasource=github-releases depName=Icinga/icingaweb2-module-incubator
+ENV ICINGA_INCUBATOR_VERSION=0.11.0
+# renovate: datasource=github-releases depName=Icinga/icingaweb2-module-reactbundle
+ENV ICINGA_REACTBUNDLE_VERSION=0.9.0
 
 RUN curl -o /tmp/icingaweb2.tar.gz -SL "https://github.com/Icinga/icingaweb2/archive/v${ICINGAWEB_VERSION}.tar.gz" \
 	&& mkdir /usr/share/icingaweb2 \
