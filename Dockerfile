@@ -2,42 +2,42 @@ FROM alpine:3.16.0
 
 RUN apk update \
 	&& apk add \
-		php7-fpm \
+		php-fpm \
 		ca-certificates \
 		curl \
 		nginx \
 		openssl \
 		gnu-libiconv \
-		php7-ctype \
-		php7-curl \
-		php7-dom \
-		php7-fpm \
-		php7-gettext \
-		php7-gd \
-		php7-gmp \
-		php7-iconv \
-		php7-intl \
-		php7-json \
-		php7-ldap \
-		php7-mbstring \
-		php7-openssl \
-		php7-pcntl \
-		php7-pdo_mysql \
-		php7-pdo_pgsql \
-		php7-pear \
-		php7-pgsql \
-		php7-phar \
-		php7-posix \
-		php7-session \
-		php7-sockets \
-		php7-simplexml \
-		php7-tokenizer \
-		php7-xml \
-		php7-pecl-redis \
-		php7-pecl-yaml \
-		php7-pecl-xdebug \
+		php-ctype \
+		php-curl \
+		php-dom \
+		php-fpm \
+		php-gettext \
+		php-gd \
+		php-gmp \
+		php-iconv \
+		php-intl \
+		php-json \
+		php-ldap \
+		php-mbstring \
+		php-openssl \
+		php-pcntl \
+		php-pdo_mysql \
+		php-pdo_pgsql \
+		php-pear \
+		php-pgsql \
+		php-phar \
+		php-posix \
+		php-session \
+		php-sockets \
+		php-simplexml \
+		php-tokenizer \
+		php-xml \
+		php8-pecl-redis \
+		php8-pecl-yaml \
+		php8-pecl-xdebug \
 		yaml \
-	&& mv /etc/php7/conf.d/50_xdebug.ini /etc/php7/conf.d/50_xdebug.ini.orig \
+	&& mv /etc/php8/conf.d/50_xdebug.ini /etc/php8/conf.d/50_xdebug.ini.orig \
 	&& php -m \
 	&& rm -rf /var/cache/apk/*
 
@@ -45,10 +45,10 @@ RUN apk update \
 # && DEBIAN_FRONTEND=noninteractive dpkg-reconfigure locales
 
 ENV LD_PRELOAD="/usr/lib/preloadable_libiconv.so php-fpm7 php"
-RUN cd /etc/php7 \
+RUN cd /etc/php8 \
 	&& echo 'date.timezone = UTC' > conf.d/timezone.ini \
 	&& { \
-		echo 'zend_extension=/usr/lib/php7/modules/xdebug.so'; \
+		echo 'zend_extension=/usr/lib/php8/modules/xdebug.so'; \
 		echo; \
 		echo '[Xdebug]'; \
 		echo 'xdebug.remote_enable=true'; \
