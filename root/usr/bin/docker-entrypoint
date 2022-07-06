@@ -19,7 +19,7 @@ if [ ! -e "$ICINGAWEB_CONFIGDIR"/config.ini ]; then
 fi
 
 phpini() {
-  echo "$1 = $2" >> /etc/php7/conf.d/ZZZlocal.ini
+  echo "$1 = $2" >> /etc/php8/conf.d/ZZZlocal.ini
 }
 
 if [ -n "$ICINGAWEB_TIMEZONE" ]; then
@@ -45,7 +45,7 @@ fi
 
 if [ -n "$XDEBUG_ENABLED" ]; then
   echo "Enabling xdebug"
-  cp /etc/php7/conf.d/xdebug.ini.disabled /etc/php7/conf.d/xdebug.ini
+  cp /etc/php8/conf.d/xdebug.ini.disabled /etc/php8/conf.d/xdebug.ini
 fi
 
 exec "$@"

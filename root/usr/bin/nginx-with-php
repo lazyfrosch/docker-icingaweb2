@@ -1,6 +1,6 @@
 #!/bin/sh
 
-php-fpm7 &
+php-fpm8 &
 
 icinga-director-daemon &
 
