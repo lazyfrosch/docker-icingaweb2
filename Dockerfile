@@ -99,7 +99,7 @@ ENV ICINGA_PHP_THIRDPARTY_VERSION=v0.11.0
 ENV ICINGA_ICINGADB_VERSION=v1.0.1
 # ENV ICINGA_ICINGADB_GIT_REF=e14cf93de42f9efc41c098469f84cb7c2a3cfc08
 # renovate: datasource=github-releases depName=Icinga/icingaweb2-module-director
-ENV ICINGA_DIRECTOR_VERSION=v1.10.1
+ENV ICINGA_DIRECTOR_VERSION=v1.10.2
 # renovate: datasource=github-releases depName=Icinga/icingaweb2-module-fileshipper
 ENV ICINGA_FILESHIPPER_VERSION=v1.2.0
 # renovate: datasource=github-releases depName=Icinga/icingaweb2-module-ipl
