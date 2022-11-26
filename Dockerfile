@@ -7,6 +7,7 @@ RUN apk update \
 		curl \
 		nginx \
 		openssl \
+		icu-data-full \
 		gnu-libiconv \
 		php-ctype \
 		php-curl \
