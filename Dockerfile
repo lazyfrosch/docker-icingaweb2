@@ -38,7 +38,7 @@ RUN apk update \
 		php81-pecl-yaml \
 		php81-pecl-xdebug \
 		yaml \
-	&& mv /etc/php8/conf.d/50_xdebug.ini /etc/php8/conf.d/50_xdebug.ini.orig \
+	&& mv /etc/php81/conf.d/50_xdebug.ini /etc/php81/conf.d/50_xdebug.ini.orig \
 	&& php -m \
 	&& rm -rf /var/cache/apk/*
 
@@ -46,10 +46,10 @@ RUN apk update \
 # && DEBIAN_FRONTEND=noninteractive dpkg-reconfigure locales
 
 ENV LD_PRELOAD="/usr/lib/preloadable_libiconv.so php-fpm7 php"
-RUN cd /etc/php8 \
+RUN cd /etc/php81 \
 	&& echo 'date.timezone = UTC' > conf.d/timezone.ini \
 	&& { \
-		echo 'zend_extension=/usr/lib/php8/modules/xdebug.so'; \
+		echo 'zend_extension=/usr/lib/php81/modules/xdebug.so'; \
 		echo; \
 		echo '[Xdebug]'; \
 		echo 'xdebug.remote_enable=true'; \
