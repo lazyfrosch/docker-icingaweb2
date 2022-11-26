@@ -33,9 +33,9 @@ RUN apk update \
 		php-simplexml \
 		php-tokenizer \
 		php-xml \
-		php8-pecl-redis \
-		php8-pecl-yaml \
-		php8-pecl-xdebug \
+		php81-pecl-redis \
+		php81-pecl-yaml \
+		php81-pecl-xdebug \
 		yaml \
 	&& mv /etc/php8/conf.d/50_xdebug.ini /etc/php8/conf.d/50_xdebug.ini.orig \
 	&& php -m \
