@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -e
+set -eu
 
 CONFIG_GROUP=${CONFIG_GROUP:-65534} # nobody on alpine
 ICINGAWEB_CONFIGDIR=${ICINGAWEB_CONFIGDIR:-'/etc/icingaweb2'}
@@ -19,7 +19,7 @@ if [ ! -e "$ICINGAWEB_CONFIGDIR"/config.ini ]; then
 fi
 
 phpini() {
-  echo "$1 = $2" >> /etc/php8/conf.d/ZZZlocal.ini
+  echo "$1 = $2" >> "${PHP_CONFIG_DIR}/conf.d/ZZZlocal.ini"
 }
 
 if [ -n "$ICINGAWEB_TIMEZONE" ]; then
@@ -45,7 +45,7 @@ fi
 
 if [ -n "$XDEBUG_ENABLED" ]; then
   echo "Enabling xdebug"
-  cp /etc/php8/conf.d/xdebug.ini.disabled /etc/php8/conf.d/xdebug.ini
+  cp "${PHP_CONFIG_DIR}/conf.d/xdebug.ini.disabled" "${PHP_CONFIG_DIR}/conf.d/xdebug.ini"
 fi
 
 exec "$@"

@@ -1,5 +1,9 @@
 FROM alpine:3.17.0
 
+ENV \
+  PHP_NAME=php81 \
+  PHP_CONFIG_DIR=/etc/php81
+
 RUN apk update \
 	&& apk add \
 		php-fpm \
@@ -34,11 +38,11 @@ RUN apk update \
 		php-simplexml \
 		php-tokenizer \
 		php-xml \
-		php81-pecl-redis \
-		php81-pecl-yaml \
-		php81-pecl-xdebug \
+		"${PHP_NAME}"-pecl-redis \
+		"${PHP_NAME}"-pecl-yaml \
+		"${PHP_NAME}"-pecl-xdebug \
 		yaml \
-	&& mv /etc/php81/conf.d/50_xdebug.ini /etc/php81/conf.d/50_xdebug.ini.orig \
+	&& mv "${PHP_CONFIG_DIR}"/conf.d/50_xdebug.ini "${PHP_CONFIG_DIR}"/conf.d/50_xdebug.ini.orig \
 	&& php -m \
 	&& rm -rf /var/cache/apk/*
 
@@ -46,10 +50,10 @@ RUN apk update \
 # && DEBIAN_FRONTEND=noninteractive dpkg-reconfigure locales
 
 ENV LD_PRELOAD="/usr/lib/preloadable_libiconv.so php-fpm7 php"
-RUN cd /etc/php81 \
+RUN cd "${PHP_CONFIG_DIR}" \
 	&& echo 'date.timezone = UTC' > conf.d/timezone.ini \
 	&& { \
-		echo 'zend_extension=/usr/lib/php81/modules/xdebug.so'; \
+		echo 'zend_extension=/usr/lib/${PHP_NAME}/modules/xdebug.so'; \
 		echo; \
 		echo '[Xdebug]'; \
 		echo 'xdebug.remote_enable=true'; \
