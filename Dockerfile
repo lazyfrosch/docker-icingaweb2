@@ -91,7 +91,7 @@ RUN cd /etc/php81 \
 VOLUME /sessions
 
 # renovate: datasource=github-releases depName=Icinga/icingaweb2
-ENV ICINGAWEB_VERSION=v2.11.2
+ENV ICINGAWEB_VERSION=v2.11.3
 # renovate: datasource=github-releases depName=Icinga/icinga-php-library
 ENV ICINGA_PHP_LIBRARY_VERSION=v0.10.0
 # renovate: datasource=github-releases depName=Icinga/icinga-php-thirdparty
