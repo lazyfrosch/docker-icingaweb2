@@ -1,5 +1,7 @@
 FROM alpine:3.17.0
 
+RUN apk upgrade && rm -rf /var/cache/apk/*
+
 ENV \
   PHP_NAME=php81 \
   PHP_CONFIG_DIR=/etc/php81
