@@ -97,7 +97,7 @@ RUN cd "${PHP_CONFIG_DIR}" \
 VOLUME /sessions
 
 # renovate: datasource=github-releases depName=Icinga/icingaweb2
-ENV ICINGAWEB_VERSION=v2.11.3
+ENV ICINGAWEB_VERSION=v2.11.4
 # renovate: datasource=github-releases depName=Icinga/icinga-php-library
 ENV ICINGA_PHP_LIBRARY_VERSION=v0.10.1
 # renovate: datasource=github-releases depName=Icinga/icinga-php-thirdparty
