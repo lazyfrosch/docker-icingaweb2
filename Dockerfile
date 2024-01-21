@@ -1,57 +1,56 @@
-FROM alpine:3.18.4
+FROM alpine:3.19.0
 
 RUN apk upgrade && rm -rf /var/cache/apk/*
 
 ENV \
-  PHP_NAME=php81 \
-  PHP_CONFIG_DIR=/etc/php81
+  PHP_NAME=php83 \
+  PHP_CONFIG_DIR=/etc/php83
 
 RUN apk update \
 	&& apk add \
-		php-fpm \
+		"${PHP_NAME}"-fpm \
 		ca-certificates \
 		curl \
 		nginx \
 		openssl \
 		icu-data-full \
 		gnu-libiconv \
-		php-ctype \
-		php-curl \
-		php-dom \
-		php-fpm \
-		php-gettext \
-		php-gd \
-		php-gmp \
-		php-iconv \
-		php-intl \
-		php-json \
-		php-ldap \
-		php-mbstring \
-		php-openssl \
-		php-pcntl \
-		php-pdo_mysql \
-		php-pdo_pgsql \
-		php-pear \
-		php-pgsql \
-		php-phar \
-		php-posix \
-		php-session \
-		php-sockets \
-		php-simplexml \
-		php-tokenizer \
-		php-xml \
+		"${PHP_NAME}"-ctype \
+		"${PHP_NAME}"-curl \
+		"${PHP_NAME}"-dom \
+		"${PHP_NAME}"-gettext \
+		"${PHP_NAME}"-gd \
+		"${PHP_NAME}"-gmp \
+		"${PHP_NAME}"-iconv \
+		"${PHP_NAME}"-intl \
+		"${PHP_NAME}"-json \
+		"${PHP_NAME}"-ldap \
+		"${PHP_NAME}"-mbstring \
+		"${PHP_NAME}"-openssl \
+		"${PHP_NAME}"-pcntl \
+		"${PHP_NAME}"-pdo_mysql \
+		"${PHP_NAME}"-pdo_pgsql \
+		"${PHP_NAME}"-pear \
+		"${PHP_NAME}"-pgsql \
+		"${PHP_NAME}"-phar \
+		"${PHP_NAME}"-posix \
+		"${PHP_NAME}"-session \
+		"${PHP_NAME}"-sockets \
+		"${PHP_NAME}"-simplexml \
+		"${PHP_NAME}"-tokenizer \
+		"${PHP_NAME}"-xml \
 		"${PHP_NAME}"-pecl-redis \
 		"${PHP_NAME}"-pecl-yaml \
 		"${PHP_NAME}"-pecl-xdebug \
 		yaml \
 	&& mv "${PHP_CONFIG_DIR}"/conf.d/50_xdebug.ini "${PHP_CONFIG_DIR}"/conf.d/50_xdebug.ini.orig \
+	&& ln -s "${PHP_NAME}" /usr/bin/php \
 	&& php -m \
 	&& rm -rf /var/cache/apk/*
 
 #RUN (echo "en_US.UTF-8 UTF-8"; echo "de_DE.UTF-8 UTF-8"; echo "fr_FR.UTF-8 UTF-8") >> /etc/locale.gen \
 # && DEBIAN_FRONTEND=noninteractive dpkg-reconfigure locales
 
-ENV LD_PRELOAD="/usr/lib/preloadable_libiconv.so php-fpm7 php"
 RUN cd "${PHP_CONFIG_DIR}" \
 	&& echo 'date.timezone = UTC' > conf.d/timezone.ini \
 	&& { \

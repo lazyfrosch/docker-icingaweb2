@@ -1,6 +1,10 @@
 #!/bin/sh
 
-php-fpm81 &
+# Note: set via Docker image env
+: "${PHP_NAME:=php83}"
+
+PHP_VERSION_SUFFIX="${PHP_NAME#php}"
+"php-fpm${PHP_VERSION_SUFFIX}" &
 
 icinga-director-daemon &
 
