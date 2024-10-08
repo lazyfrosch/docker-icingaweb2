@@ -110,7 +110,7 @@ ENV ICINGA_FILESHIPPER_VERSION=v1.2.0
 # renovate: datasource=github-releases depName=Icinga/icingaweb2-module-ipl
 ENV ICINGA_IPL_VERSION=v0.5.0
 # renovate: datasource=github-releases depName=Icinga/icingaweb2-module-incubator
-ENV ICINGA_INCUBATOR_VERSION=v0.20.0
+ENV ICINGA_INCUBATOR_VERSION=v0.22.0
 # renovate: datasource=github-releases depName=Icinga/icingaweb2-module-reactbundle
 ENV ICINGA_REACTBUNDLE_VERSION=v0.9.0
 
