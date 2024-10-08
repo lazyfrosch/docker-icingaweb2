@@ -1,4 +1,4 @@
-FROM alpine:3.19.0
+FROM alpine:3.20.3
 
 RUN apk upgrade && rm -rf /var/cache/apk/*
 
@@ -44,7 +44,6 @@ RUN apk update \
 		"${PHP_NAME}"-pecl-xdebug \
 		yaml \
 	&& mv "${PHP_CONFIG_DIR}"/conf.d/50_xdebug.ini "${PHP_CONFIG_DIR}"/conf.d/50_xdebug.ini.orig \
-	&& ln -s "${PHP_NAME}" /usr/bin/php \
 	&& php -m \
 	&& rm -rf /var/cache/apk/*
 
