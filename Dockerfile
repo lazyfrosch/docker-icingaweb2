@@ -44,7 +44,7 @@ RUN apk update \
 		"${PHP_NAME}"-pecl-xdebug \
 		yaml \
 	&& mv "${PHP_CONFIG_DIR}"/conf.d/50_xdebug.ini "${PHP_CONFIG_DIR}"/conf.d/50_xdebug.ini.orig \
-	&& php -m \
+	&& "${PHP_NAME}" -m \
 	&& rm -rf /var/cache/apk/*
 
 #RUN (echo "en_US.UTF-8 UTF-8"; echo "de_DE.UTF-8 UTF-8"; echo "fr_FR.UTF-8 UTF-8") >> /etc/locale.gen \
@@ -88,7 +88,7 @@ RUN cd "${PHP_CONFIG_DIR}" \
 		echo 'listen.owner = nginx'; \
 		echo 'listen.group = nginx'; \
 	} | tee php-fpm.d/zz-docker.conf \
-	&& php -m \
+	&& "${PHP_NAME}" -m \
 	&& mkdir /sessions \
 	&& chown nobody:nobody /sessions
 
