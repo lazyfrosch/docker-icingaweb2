@@ -3,8 +3,8 @@ FROM alpine:3.24.1
 RUN apk upgrade && rm -rf /var/cache/apk/*
 
 ENV \
-  PHP_NAME=php83 \
-  PHP_CONFIG_DIR=/etc/php83
+  PHP_NAME=php84 \
+  PHP_CONFIG_DIR=/etc/php84
 
 RUN apk update \
 	&& apk add \
