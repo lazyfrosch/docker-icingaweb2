@@ -103,6 +103,8 @@ ENV ICINGA_PHP_THIRDPARTY_VERSION=v1.0.0
 # renovate: datasource=github-releases depName=Icinga/icingadb-web
 ENV ICINGA_ICINGADB_VERSION=v1.4.0
 # ENV ICINGA_ICINGADB_GIT_REF=e14cf93de42f9efc41c098469f84cb7c2a3cfc08
+# renovate: datasource=github-releases depName=Icinga/icingaweb2-module-monitoring
+ENV ICINGA_MONITORING_VERSION=v2.12.6
 # renovate: datasource=github-releases depName=Icinga/icingaweb2-module-director
 ENV ICINGA_DIRECTOR_VERSION=v1.11.9
 # renovate: datasource=github-releases depName=Icinga/icingaweb2-module-fileshipper
@@ -148,7 +150,7 @@ RUN for module in icingadb; do \
 	;done
 
 # old module names
-RUN for module in director fileshipper ipl incubator reactbundle; do \
+RUN for module in monitoring director fileshipper ipl incubator reactbundle; do \
 	version="ICINGA_$(echo "${module}" | tr '[a-z]' '[A-Z]')_VERSION" \
 	&& curl -o /tmp/module.tar.gz -LS \
 		"https://github.com/Icinga/icingaweb2-module-${module}/archive/$(eval echo \$$version).tar.gz" \
