@@ -45,6 +45,7 @@ RUN apk update \
 		yaml \
 	&& mv "${PHP_CONFIG_DIR}"/conf.d/50_xdebug.ini "${PHP_CONFIG_DIR}"/conf.d/50_xdebug.ini.orig \
 	&& "${PHP_NAME}" -m \
+	&& ln -s "/usr/bin/${PHP_NAME}" /usr/bin/php \
 	&& rm -rf /var/cache/apk/*
 
 #RUN (echo "en_US.UTF-8 UTF-8"; echo "de_DE.UTF-8 UTF-8"; echo "fr_FR.UTF-8 UTF-8") >> /etc/locale.gen \
