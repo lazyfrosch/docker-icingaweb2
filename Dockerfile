@@ -107,7 +107,7 @@ ENV ICINGA_ICINGADB_VERSION=v1.4.0
 # renovate: datasource=github-releases depName=Icinga/icingaweb2-module-monitoring
 ENV ICINGA_MONITORING_VERSION=v2.12.6
 # renovate: datasource=github-releases depName=Icinga/icingaweb2-module-director
-ENV ICINGA_DIRECTOR_VERSION=v1.11.9
+ENV ICINGA_DIRECTOR_VERSION=v1.12.1
 # renovate: datasource=github-releases depName=Icinga/icingaweb2-module-fileshipper
 ENV ICINGA_FILESHIPPER_VERSION=v1.3.0
 # renovate: datasource=github-releases depName=Icinga/icingaweb2-module-ipl
