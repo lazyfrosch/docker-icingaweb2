@@ -24,9 +24,8 @@ RUN apk add --no-cache \
 		yaml-dev \
 	&& docker-php-ext-configure gd --with-freetype --with-jpeg \
 	&& docker-php-ext-install -j"$(nproc)" gd gmp intl ldap pdo_mysql pdo_pgsql pgsql \
-	&& pecl install redis yaml xdebug \
-	&& docker-php-ext-enable redis yaml xdebug \
-	&& mv "${PHP_CONFIG_DIR}"/conf.d/docker-php-ext-xdebug.ini "${PHP_CONFIG_DIR}"/conf.d/docker-php-ext-xdebug.ini.orig \
+	&& pecl install redis yaml \
+	&& docker-php-ext-enable redis yaml \
 	&& rm -rf /tmp/pear \
 	&& apk del .build-deps
 
@@ -35,15 +34,6 @@ RUN apk add --no-cache \
 
 RUN cd "${PHP_CONFIG_DIR}" \
 	&& echo 'date.timezone = UTC' > conf.d/timezone.ini \
-	&& { \
-		echo 'zend_extension=xdebug'; \
-		echo; \
-		echo '[Xdebug]'; \
-		echo 'xdebug.mode=debug,profile'; \
-		echo 'xdebug.start_with_request=trigger'; \
-		echo 'xdebug.discover_client_host=1'; \
-		echo 'xdebug.output_dir=/tmp/profile'; \
-	} > conf.d/xdebug.ini.disabled \
 	&& { \
 		echo '[global]'; \
 		echo 'error_log = /proc/self/fd/2'; \
