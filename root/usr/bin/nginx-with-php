@@ -1,10 +1,6 @@
 #!/bin/sh
 
-# Note: set via Docker image env
-: "${PHP_NAME:=php84}"
-
-PHP_VERSION_SUFFIX="${PHP_NAME#php}"
-"php-fpm${PHP_VERSION_SUFFIX}" &
+php-fpm &
 
 icinga-director-daemon &
 
