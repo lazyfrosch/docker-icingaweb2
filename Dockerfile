@@ -1,68 +1,39 @@
-FROM alpine:3.24.2
+FROM php:8.4.27-fpm-alpine3.24
 
-RUN apk upgrade && rm -rf /var/cache/apk/*
+ENV PHP_CONFIG_DIR=/usr/local/etc/php
 
-ENV \
-  PHP_NAME=php84 \
-  PHP_CONFIG_DIR=/etc/php84
-
-RUN apk update \
-	&& apk add \
-		"${PHP_NAME}"-fpm \
-		ca-certificates \
-		curl \
+RUN apk add --no-cache \
+		freetype \
+		gmp \
+		icu-libs \
+		libjpeg-turbo \
+		libldap \
+		libpng \
+		libpq \
 		nginx \
-		openssl \
-		icu-data-full \
-		gnu-libiconv \
-		"${PHP_NAME}"-ctype \
-		"${PHP_NAME}"-curl \
-		"${PHP_NAME}"-dom \
-		"${PHP_NAME}"-gettext \
-		"${PHP_NAME}"-gd \
-		"${PHP_NAME}"-gmp \
-		"${PHP_NAME}"-iconv \
-		"${PHP_NAME}"-intl \
-		"${PHP_NAME}"-json \
-		"${PHP_NAME}"-ldap \
-		"${PHP_NAME}"-mbstring \
-		"${PHP_NAME}"-openssl \
-		"${PHP_NAME}"-pcntl \
-		"${PHP_NAME}"-pdo_mysql \
-		"${PHP_NAME}"-pdo_pgsql \
-		"${PHP_NAME}"-pear \
-		"${PHP_NAME}"-pgsql \
-		"${PHP_NAME}"-phar \
-		"${PHP_NAME}"-posix \
-		"${PHP_NAME}"-session \
-		"${PHP_NAME}"-sockets \
-		"${PHP_NAME}"-simplexml \
-		"${PHP_NAME}"-tokenizer \
-		"${PHP_NAME}"-xml \
-		"${PHP_NAME}"-pecl-redis \
-		"${PHP_NAME}"-pecl-yaml \
-		"${PHP_NAME}"-pecl-xdebug \
 		yaml \
-	&& mv "${PHP_CONFIG_DIR}"/conf.d/50_xdebug.ini "${PHP_CONFIG_DIR}"/conf.d/50_xdebug.ini.orig \
-	&& "${PHP_NAME}" -m \
-	&& ln -s "/usr/bin/${PHP_NAME}" /usr/bin/php \
-	&& rm -rf /var/cache/apk/*
+	&& apk add --no-cache --virtual .build-deps \
+		$PHPIZE_DEPS \
+		freetype-dev \
+		gmp-dev \
+		icu-dev \
+		libjpeg-turbo-dev \
+		libpng-dev \
+		openldap-dev \
+		postgresql-dev \
+		yaml-dev \
+	&& docker-php-ext-configure gd --with-freetype --with-jpeg \
+	&& docker-php-ext-install -j"$(nproc)" gd gmp intl ldap pdo_mysql pdo_pgsql pgsql \
+	&& pecl install redis yaml \
+	&& docker-php-ext-enable redis yaml \
+	&& rm -rf /tmp/pear \
+	&& apk del .build-deps
 
 #RUN (echo "en_US.UTF-8 UTF-8"; echo "de_DE.UTF-8 UTF-8"; echo "fr_FR.UTF-8 UTF-8") >> /etc/locale.gen \
 # && DEBIAN_FRONTEND=noninteractive dpkg-reconfigure locales
 
 RUN cd "${PHP_CONFIG_DIR}" \
 	&& echo 'date.timezone = UTC' > conf.d/timezone.ini \
-	&& { \
-		echo 'zend_extension=/usr/lib/${PHP_NAME}/modules/xdebug.so'; \
-		echo; \
-		echo '[Xdebug]'; \
-		echo 'xdebug.remote_enable=true'; \
-		echo 'xdebug.remote_connect_back=true'; \
-		echo 'xdebug.profiler_enable=0'; \
-		echo 'xdebug.profiler_output_dir=/tmp/profile'; \
-		echo 'xdebug.profiler_enable_trigger=1'; \
-	} | tee conf.d/xdebug.ini.disabled \
 	&& { \
 		echo '[global]'; \
 		echo 'error_log = /proc/self/fd/2'; \
@@ -75,11 +46,11 @@ RUN cd "${PHP_CONFIG_DIR}" \
 		echo; \
 		echo '; Ensure worker stdout and stderr are sent to the main error log.'; \
 		echo 'catch_workers_output = yes'; \
-	} | tee php-fpm.d/docker.conf \
+	} > /usr/local/etc/php-fpm.d/docker.conf \
 	&& { \
 		echo '; Session paths for a volume '; \
 		echo 'session.save_path = "/sessions"'; \
-	} | tee conf.d/docker.ini \
+	} > conf.d/docker.ini \
 	&& { \
 		echo '[global]'; \
 		echo 'daemonize = no'; \
@@ -88,10 +59,10 @@ RUN cd "${PHP_CONFIG_DIR}" \
 		echo 'listen = /run/php-fpm.sock'; \
 		echo 'listen.owner = nginx'; \
 		echo 'listen.group = nginx'; \
-	} | tee php-fpm.d/zz-docker.conf \
-	&& "${PHP_NAME}" -m \
+	} > /usr/local/etc/php-fpm.d/zz-docker.conf \
+	&& php -m \
 	&& mkdir /sessions \
-	&& chown nobody:nobody /sessions
+	&& chown www-data:www-data /sessions
 
 VOLUME /sessions
 
