@@ -5,6 +5,7 @@ ENV PHP_CONFIG_DIR=/usr/local/etc/php
 RUN apk add --no-cache \
 		freetype \
 		gmp \
+		gettext-libs \
 		icu-libs \
 		libjpeg-turbo \
 		libldap \
@@ -15,6 +16,7 @@ RUN apk add --no-cache \
 	&& apk add --no-cache --virtual .build-deps \
 		$PHPIZE_DEPS \
 		freetype-dev \
+		gettext-dev \
 		gmp-dev \
 		icu-dev \
 		libjpeg-turbo-dev \
@@ -23,7 +25,7 @@ RUN apk add --no-cache \
 		postgresql-dev \
 		yaml-dev \
 	&& docker-php-ext-configure gd --with-freetype --with-jpeg \
-	&& docker-php-ext-install -j"$(nproc)" gd gmp intl ldap pdo_mysql pdo_pgsql pgsql \
+	&& docker-php-ext-install -j"$(nproc)" gd gettext gmp intl ldap pdo_mysql pdo_pgsql pgsql \
 	&& pecl install redis yaml \
 	&& docker-php-ext-enable redis yaml \
 	&& rm -rf /tmp/pear \
