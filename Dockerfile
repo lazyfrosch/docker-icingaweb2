@@ -1,4 +1,4 @@
-FROM php:8.4.27-fpm-alpine3.24
+FROM php:8.5.12-fpm-alpine3.24
 
 ENV PHP_CONFIG_DIR=/usr/local/etc/php
 
