@@ -75,7 +75,7 @@ ENV ICINGA_PHP_LIBRARY_VERSION=v1.0.1
 # renovate: datasource=github-releases depName=Icinga/icinga-php-thirdparty
 ENV ICINGA_PHP_THIRDPARTY_VERSION=v1.0.1
 # renovate: datasource=github-releases depName=Icinga/icingadb-web
-ENV ICINGA_ICINGADB_VERSION=v1.4.0
+ENV ICINGA_ICINGADB_VERSION=v1.5.0
 # ENV ICINGA_ICINGADB_GIT_REF=e14cf93de42f9efc41c098469f84cb7c2a3cfc08
 # renovate: datasource=github-releases depName=Icinga/icingaweb2-module-monitoring
 ENV ICINGA_MONITORING_VERSION=v2.12.6
