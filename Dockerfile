@@ -71,7 +71,7 @@ VOLUME /sessions
 # renovate: datasource=github-releases depName=Icinga/icingaweb2
 ENV ICINGAWEB_VERSION=v2.14.0
 # renovate: datasource=github-releases depName=Icinga/icinga-php-library
-ENV ICINGA_PHP_LIBRARY_VERSION=v1.0.1
+ENV ICINGA_PHP_LIBRARY_VERSION=v1.2.0
 # renovate: datasource=github-releases depName=Icinga/icinga-php-thirdparty
 ENV ICINGA_PHP_THIRDPARTY_VERSION=v1.0.1
 # renovate: datasource=github-releases depName=Icinga/icingadb-web
